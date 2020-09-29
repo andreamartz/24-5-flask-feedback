@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Give Feedback{% endblock %}
+
+{% block content %}
+<h1 class="display-1">Tell us your thoughts!</h1>
+
+{% if session['username'] == user.username %}
+
+<form method="POST">
+  <!-- CSRF hidden tag -->
+  {{ form.hidden_tag() }}
+
+  {% for field in form 
+    if field.widget.input_type != 'hidden' %}
+
+  <p>
+    {{ field.label }}
+    {{ field(class_="form-control") }}
+
+    {% for error in field.errors %}
+    <span class="form-text text-danger">{{ error }}</span>
+
+    {% endfor %}
+  </p>
+  {% endfor %}
+
+  <button class="btn btn-lg btn-success" type="submit">Submit Feedback</button>
+
+</form>
+
+{% endif %}
+{% endblock %}

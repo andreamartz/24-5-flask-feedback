@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Show User Info{% endblock %}
+
+{% block content %}
+<h1 class="display-1">Profile for {{ user.first_name }} {{ user.last_name }}</h1>
+
+{% if session['username'] == user.username %}
+<div class="card bg-light my-3">
+  <h4 class="card-header">{{ user.first_name }} {{ user.last_name }}'s Info</h4>
+  <div class="card-body">
+
+    <h5 class="card-title mb-4"><span class="font-weight-bold">Username: </span> {{ user.username }}
+
+      <!-- Forms don't support the DELETE method. -->
+      <!-- We are "keeping it simple" by deleting via a POST method, but note that this is NOT the RESTful way. -->
+      <form id="delete-user" action="/users/{{ user.username }}/delete" method="POST">
+        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+      </form>
+
+    </h5>
+    <p class="card-text mb-3"><span class="font-weight-bold">Email: </span> {{ user.email }}</p>
+    <p class="card-text mb-3"><span class="font-weight-bold">First name: </span> {{ user.first_name }}</p>
+    <p class="card-text mb-3"><span class="font-weight-bold">Last name: </span> {{ user.last_name }}</p>
+  </div>
+</div>
+
+<div>
+  <a href="/users/{{ user.username }}/feedback/add">
+    <button class="btn btn-lg btn-info">Give Feedback</button>
+  </a>
+</div>
+
+{% for post in user.posts %}
+
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title text-info font-weight-bold">{{ post.title }}
+      {% if session['username'] == post.user.username %}
+      <!-- Forms don't have DELETE method -->
+      <!-- Colt is "keeping it simple" by using a form with POST method to delete a tweet -->
+      <!-- <form id="delete-feedback" action="/feedback/{{ post.id }}/delete" method="POST">
+        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+      </form> -->
+      <form id="feedback-buttons">
+        {{form.hidden_tag()}}
+        <button class="btn btn-sm btn-primary" formmethod="GET" formaction="/feedback/{{ post.id }}/update">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" formmethod="POST" formaction="/feedback/{{ post.id }}/delete">
+          <i class="fas fa-trash"></i>
+        </button>
+      </form>
+      {% endif %}
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">Date goes here</h6>
+    <p class="card-text">
+      {{ post.content }}
+    </p>
+  </div>
+</div>
+{% endfor %}
+
+{% endif %}
+{% endblock %}
