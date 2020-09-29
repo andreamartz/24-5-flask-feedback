@@ -67,7 +67,7 @@ def register_user():
                 "That username is taken. Please choose another username.")
 
     # if the form validation fails
-    return render_template('register.html', form=form)
+    return render_template('/users/register.html', form=form)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -92,7 +92,7 @@ def login_user():
         else:
             form.username.errors = ["Invalid username/password"]
 
-    return render_template("login.html", form=form)
+    return render_template("/users/login.html", form=form)
 
 
 # Step 6: Let's change /secret to /users/<username>
