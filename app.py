@@ -175,10 +175,12 @@ def delete_feedback(feedback_id):
         flash("Please login first!", "danger")
         return redirect('/login')
     post = Post.query.get_or_404(feedback_id)
+
     # Logged in user does NOT own the feedback post
     if session['username'] != post.username:
         flash("You don't have permission to do that!", "danger")
         return redirect('/')
+
     # Logged in user owns the feedback post
     form = DeleteForm()
     if form.validate_on_submit():
@@ -186,23 +188,6 @@ def delete_feedback(feedback_id):
         db.session.commit()
         flash("Feedback deleted!", "info")
         return redirect(f'/users/{post.username}')
-
-
-# @app.route("/feedback/<int:post_id>/delete", methods=["POST"])
-# def delete_feedback(post_id):
-#     """Delete feedback."""
-
-#     post = Post.query.get_or_404(post_id)
-#     if "username" not in session or post.username != session['username']:
-#         raise Unauthorized()
-
-#     form = DeleteForm()
-
-#     if form.validate_on_submit():
-#         db.session.delete(post)
-#         db.session.commit()
-
-#     return redirect(f"/users/{post.username}")
 
 
 # Step 5: Log out users
