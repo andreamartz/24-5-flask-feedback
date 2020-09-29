@@ -1,1 +1,4 @@
 venv/
+solution/
+__pycache__/
+.DS_Storegit
